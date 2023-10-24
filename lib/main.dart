@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
+import 'package:loja_virtual/screens/login/login_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
 import 'package:provider/provider.dart'; // Importe o Firebase Core
 
@@ -24,7 +25,7 @@ class LojaVirtual extends StatelessWidget {
             appBarTheme: const AppBarTheme(elevation: 0),
             primaryColor: Colors.indigo,
             scaffoldBackgroundColor: Colors.indigo),
-        initialRoute: '/base',
+        initialRoute: '/login',
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/base':
@@ -33,7 +34,9 @@ class LojaVirtual extends StatelessWidget {
               );
             case '/signup':
               return MaterialPageRoute(builder: (_) => SignupScreen());
-            case '/base':
+            case '/login':
+              return MaterialPageRoute(builder: (_) => LoginScreen());
+            // case '/base':
             default:
               return MaterialPageRoute(builder: (_) => BaseScreen());
           }

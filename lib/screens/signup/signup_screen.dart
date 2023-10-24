@@ -148,7 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         );
 
                         context.read<UserManager>().signUp(
-                              user: user,
+                              userModel: user,
                               onFail: (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

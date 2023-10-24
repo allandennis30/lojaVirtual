@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/helpers/firebase_erros.dart';
 import 'package:loja_virtual/models/userModel.dart';
@@ -6,31 +6,37 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserManager extends ChangeNotifier {
   UserManager() {
+    user = null; // Initialize user as null
     _loadCurrentUser();
   }
 
-  late User? user; // Altere o tipo da variável para User?
+  UserModel? user;
+
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool _loading = false;
   bool get loading => _loading;
 
-  Future<User?> signIn(
-      {required UserModel user,
-      required Function onFail,
-      required Function onSucess}) async {
+  Future<User?> signIn({
+    required UserModel user,
+    required Function onFail,
+    required Function onSucess,
+  }) async {
     loading = true;
     try {
       final UserCredential result = await auth.signInWithEmailAndPassword(
-          email: user.email, password: user.password);
+        email: user.email,
+        password: user.password!,
+      );
+
       onSucess();
-      this.user = result.user;
-      print('Logado com sucesso uid: ${this.user?.uid}');
+
+      await _loadCurrentUser(firebaseUser: auth.currentUser);
       return result.user;
     } on FirebaseAuthException catch (e) {
       final erro = getFirebaseErrorString(e.code);
       onFail(erro);
     } catch (e) {
-      // Qualquer outro erro que não seja uma exceção específica do FirebaseAuth
       onFail("Ocorreu um erro desconhecido ao tentar fazer login.");
     } finally {
       loading = false;
@@ -42,33 +48,46 @@ class UserManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _loadCurrentUser() async {
-    User? currentUser = auth.currentUser;
+  Future<void> _loadCurrentUser({User? firebaseUser}) async {
+    final User? currentUser = firebaseUser ?? auth.currentUser;
+
     if (currentUser != null) {
-      user = currentUser;
-      print(this.user?.uid);
+      final DocumentSnapshot docUser =
+          await firestore.collection('users').doc(currentUser.uid).get();
+
+      if (docUser.exists) {
+        user = UserModel.fromDocument(docUser);
+      } else {
+        // Handle the case where the document does not exist
+      }
+      print('Nome cadastrado : ${user?.name}');
+      notifyListeners();
     }
   }
 
-  Future<void> signUp(
-      {required UserModel user,
-      required Function onFail,
-      required Function onSucess}) async {
+  Future<void> signUp({
+    required UserModel userModel,
+    required Function onFail,
+    required Function onSucess,
+  }) async {
     try {
       loading = true;
       final UserCredential result = await auth.createUserWithEmailAndPassword(
-          email: user.email, password: user.password);
-      this.user = result.user;
-      user.id = result.user?.uid;
-      await user.saveData();
+        email: userModel.email,
+        password: userModel.password!,
+      );
+
+      userModel.id = result.user?.uid;
+      user = userModel;
+
+      await userModel.saveData();
       onSucess();
 
-      print('Cadastrado com sucesso uid: ${this.user?.uid}');
+      print('Cadastrado com sucesso uid: ${result.user?.uid}');
     } on FirebaseAuthException catch (e) {
       final erro = getFirebaseErrorString(e.code);
       onFail(erro);
     } catch (e) {
-      // Qualquer outro erro que não seja uma exceção específica do FirebaseAuth
       onFail("Ocorreu um erro desconhecido ao tentar fazer o cadastro.");
     } finally {
       loading = false;
