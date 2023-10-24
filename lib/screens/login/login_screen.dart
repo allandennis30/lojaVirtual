@@ -133,6 +133,8 @@ class LoginScreen extends StatelessWidget {
                                       },
                                       onSucess: () {
                                         log('Logado com sucesso');
+                                        Navigator.of(context)
+                                            .pushReplacementNamed('/base');
                                         // TODO: Fechar tela de login
                                       },
                                       user: UserModel(
