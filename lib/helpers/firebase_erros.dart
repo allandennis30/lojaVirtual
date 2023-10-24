@@ -14,6 +14,8 @@ String getFirebaseErrorString(String errorCode) {
       return "Operação não permitida.";
     case "INVALID_LOGIN_CREDENTIALS":
       return "E-mail ou senha inválidos.";
+    case "email-already-in-use":
+      return "Esse E-mail já foi cadastrado.";
     default:
       return "Ocorreu um erro ao tentar fazer login.";
   }

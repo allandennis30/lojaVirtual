@@ -22,6 +22,18 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Entrar'),
         centerTitle: true,
+        actions: <Widget>[
+          ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed('/signup');
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent, elevation: 0),
+              child: const Text(
+                'Criar Conta',
+                style: TextStyle(fontSize: 14),
+              ))
+        ],
         backgroundColor: primaryColor,
       ),
       body: Center(
@@ -94,39 +106,53 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!userManager.loading) {
-                          if (formKey.currentState!.validate()) {
-                            context.read<UserManager>().signIn(
-                                onFail: (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Falha ao entrar: $e'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                },
-                                onSucess: () {
-                                  log('Logado com sucesso');
-                                  // TODO: Fechar tela de login
-                                },
-                                user: UserModel(
-                                    email: emailController.text,
-                                    password: passController.text));
-                          }
-                        }
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          userManager.loading ? Colors.grey : Colors.indigo,
-                        ),
-                      ),
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    child: userManager.loading
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            width: 50,
+                            child: const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation(Colors.blueAccent),
+                            ),
+                          )
+                        : ElevatedButton(
+                            onPressed: () {
+                              if (!userManager.loading) {
+                                if (formKey.currentState!.validate()) {
+                                  context.read<UserManager>().signIn(
+                                      onFail: (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text('Falha ao entrar: $e'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      },
+                                      onSucess: () {
+                                        log('Logado com sucesso');
+                                        // TODO: Fechar tela de login
+                                      },
+                                      user: UserModel(
+                                          email: emailController.text,
+                                          password: passController.text));
+                                }
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                userManager.loading
+                                    ? Colors.grey
+                                    : Colors.indigo,
+                              ),
+                            ),
+                            child: const Text(
+                              'Entrar',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
                   ),
                 ],
               );
@@ -135,3 +161,5 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
+ //os campos estao bloqueados mesmo que loading seja false

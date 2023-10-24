@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/page_manager.dart';
 import 'package:provider/provider.dart';
