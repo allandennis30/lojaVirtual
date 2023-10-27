@@ -16,6 +16,7 @@ class UserManager extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool _loading = false;
   bool get loading => _loading;
+  bool get isLoggedIn => user != null;
 
   Future<User?> signIn({
     required UserModel user,
@@ -92,5 +93,11 @@ class UserManager extends ChangeNotifier {
     } finally {
       loading = false;
     }
+  }
+
+  void signOut() {
+    auth.signOut();
+    user = null;
+    notifyListeners();
   }
 }

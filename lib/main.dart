@@ -19,6 +19,8 @@ class LojaVirtual extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => UserManager(),
+      // lazy faz a inicialização só quando for necessária se for true, quando false carrega imediatamente
+      lazy: false,
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -29,9 +31,7 @@ class LojaVirtual extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/base':
-              return MaterialPageRoute(
-                builder: (_) => BaseScreen(),
-              );
+              return MaterialPageRoute(builder: (_) => BaseScreen());
             case '/signup':
               return MaterialPageRoute(builder: (_) => SignupScreen());
             case '/login':
