@@ -9,6 +9,24 @@ class ProductManager extends ChangeNotifier {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<ProductModel> allProducts = [];
+  String _search = '';
+
+  String get search => _search;
+  set search(String value) {
+    _search = value;
+    notifyListeners();
+  }
+
+  List<ProductModel> get filteredProducts {
+    final List<ProductModel> filteredProducts = [];
+    if (search.isEmpty) {
+      filteredProducts.addAll(allProducts);
+    } else {
+      filteredProducts.addAll(allProducts
+          .where((p) => p.name.toLowerCase().contains(search.toLowerCase())));
+    }
+    return filteredProducts;
+  }
 
   void _loadAllProducts() async {
     final QuerySnapshot snapProducts =
