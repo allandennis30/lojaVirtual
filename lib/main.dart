@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
 import 'package:loja_virtual/screens/login/login_screen.dart';
@@ -17,10 +18,17 @@ class LojaVirtual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserManager(),
-      // lazy faz a inicialização só quando for necessária se for true, quando false carrega imediatamente
-      lazy: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserManager(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductManager(),
+          lazy: false,
+        )
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -33,10 +41,9 @@ class LojaVirtual extends StatelessWidget {
             case '/base':
               return MaterialPageRoute(builder: (_) => BaseScreen());
             case '/signup':
-              return MaterialPageRoute(builder: (_) => SignupScreen());
+              return MaterialPageRoute(builder: (_) => const SignupScreen());
             case '/login':
               return MaterialPageRoute(builder: (_) => LoginScreen());
-            // case '/base':
             default:
               return MaterialPageRoute(builder: (_) => BaseScreen());
           }

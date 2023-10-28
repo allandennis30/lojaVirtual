@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
         actions: <Widget>[
           ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/signup');
+                Navigator.of(context).pushNamed('/signup');
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent, elevation: 0),

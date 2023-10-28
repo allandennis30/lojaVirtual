@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual/commom/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/models/page_manager.dart';
 import 'package:loja_virtual/screens/login/login_screen.dart';
+import 'package:loja_virtual/screens/produtcs/products_screen.dart';
 import 'package:provider/provider.dart';
 
 class BaseScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class BaseScreen extends StatelessWidget {
                 ),
                 body:
                     Container(color: const Color.fromARGB(255, 158, 123, 120))),
+            const ProductsScreen(),
             Container(color: Colors.red),
             Container(color: Colors.green),
             Container(color: Colors.blue),

@@ -5,7 +5,7 @@ import 'package:loja_virtual/models/user_manager.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -24,6 +24,12 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).popAndPushNamed('/login');
+        },
+      ),
       key: scaffoldKey,
       appBar: AppBar(
         title: const Text('Criar Conta'),
