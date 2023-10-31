@@ -4,8 +4,11 @@ import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
 import 'package:loja_virtual/screens/login/login_screen.dart';
+import 'package:loja_virtual/screens/productScreen/product_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
-import 'package:provider/provider.dart'; // Importe o Firebase Core
+import 'package:provider/provider.dart';
+
+import 'models/product_model.dart'; // Importe o Firebase Core
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +47,10 @@ class LojaVirtual extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const SignupScreen());
             case '/login':
               return MaterialPageRoute(builder: (_) => LoginScreen());
+            case '/product_screen':
+              return MaterialPageRoute(
+                  builder: (_) => ProductScreen(
+                      productModel: settings.arguments as ProductModel));
             default:
               return MaterialPageRoute(builder: (_) => BaseScreen());
           }
