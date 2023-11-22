@@ -42,6 +42,7 @@ class UserManager extends ChangeNotifier {
     } finally {
       loading = false;
     }
+    return null;
   }
 
   set loading(bool value) {

@@ -1,7 +1,5 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_virtual/models/item_size_model.dart';
-import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/product_model.dart';
 import 'package:loja_virtual/screens/produtcs/components/size_widget.dart';
 import 'package:provider/provider.dart';
@@ -77,6 +75,8 @@ class ProductScreen extends StatelessWidget {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: productModel.sizes.map((s) {
                         return SizeWidget(size: s);
                       }).toList(),
